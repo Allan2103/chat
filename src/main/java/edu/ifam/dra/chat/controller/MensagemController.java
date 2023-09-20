@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ifam.dra.chat.model.Mensagem;
 import edu.ifam.dra.chat.service.MensagemService;
+import edu.ifam.dra.chat.dto.DTOMensagem;
 
 @RequestMapping("/mensagem")
 @RestController
@@ -23,6 +24,8 @@ public class MensagemController {
 
 	@Autowired
 	MensagemService mensagemService;
+	
+	DTOMensagem dtoMensagem;
 
 	@GetMapping
 	ResponseEntity<List<Mensagem>> getMensagem(){
