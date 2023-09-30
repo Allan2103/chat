@@ -12,7 +12,7 @@ import edu.ifam.dra.chat.repositories.MensagemRepository;
 @Service
 public class MensagemService {
 	
-	@Autowired
+	@Autowired(required=false)
 	MensagemRepository mensagemRepository;
 
 	public List<Mensagem> getMensagens(){

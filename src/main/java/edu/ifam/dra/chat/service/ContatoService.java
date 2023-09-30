@@ -12,7 +12,7 @@ import edu.ifam.dra.chat.repositories.ContatoRepository;
 @Service
 public class ContatoService {
 	
-	@Autowired
+	@Autowired(required=false)
 	ContatoRepository contatoRepository;
 
 	public List<Contato> getContatos(){
