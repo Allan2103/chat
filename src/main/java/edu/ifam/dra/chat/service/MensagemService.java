@@ -1,47 +1,39 @@
 package edu.ifam.dra.chat.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.ifam.dra.chat.dto.DTOMensagem;
 import edu.ifam.dra.chat.model.Mensagem;
 import edu.ifam.dra.chat.repositories.MensagemRepository;
 
 @Service
 public class MensagemService {
-	
-	@Autowired(required=false)
-	MensagemRepository mensagemRepository;
 
-	public List<Mensagem> getMensagens(){
-		return mensagemRepository.findAll();
+	@Autowired
+	private MensagemRepository mensagemRepository;
+	
+	@Autowired
+	private ContatoService contatoService;
+	
+	public List<Mensagem> getMensagensReceptor(Long idReceptor){
+		return mensagemRepository.findByReceptor(contatoService.getContato(idReceptor));
 	}
 	
-	public Mensagem getMensagem(Long id) {
-		Optional<Mensagem> optionalContato = mensagemRepository.findById(id);
-		if(optionalContato.isPresent())
-			return optionalContato.get();
-		return new Mensagem();
+	public List<Mensagem> getMensagensEmissor(Long idEmissor){
+		return mensagemRepository.findByEmissor(contatoService.getContato(idEmissor));
 	}
 	
-	public Mensagem setMensagem(Mensagem mensagem) {
+	public Mensagem setMensagemFromDTOMensagem(DTOMensagem dtoMensagem) {
+		Mensagem mensagem = new Mensagem();
+		mensagem.setDataHora(dtoMensagem.getDataHora());
+		mensagem.setConteudo(dtoMensagem.getConteudo());
+		mensagem.setEmissor(contatoService.getContato(dtoMensagem.getEmissor()));
+		mensagem.setReceptor(contatoService.getContato(dtoMensagem.getId()));
 		return mensagemRepository.save(mensagem);
 	}
 	
-	public Mensagem setMensagem(Long id, Mensagem mensagem) {
-		Optional<Mensagem> optionalMensagem = mensagemRepository.findById(id);
-		if(optionalMensagem.isPresent()) {
-			mensagem.setId(id);
-			return mensagemRepository.save(mensagem);
-		}
-		return new Mensagem();
-	}
 	
-	public void deleteMensagem(Long id) {
-		Optional<Mensagem> optionalMensagem = mensagemRepository.findById(id);
-		if(optionalMensagem.isPresent())
-			mensagemRepository.deleteById(id);
-	}
 }

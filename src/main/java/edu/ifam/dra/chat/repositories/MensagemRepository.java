@@ -1,11 +1,13 @@
 package edu.ifam.dra.chat.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import edu.ifam.dra.chat.model.Contato;
 import edu.ifam.dra.chat.model.Mensagem;
+import java.util.List;
 
-@Repository
+
 public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
-
+	List<Mensagem> findByReceptor(Contato receptor);
+	List<Mensagem> findByEmissor(Contato emissor);
 }
